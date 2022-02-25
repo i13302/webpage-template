@@ -22,12 +22,6 @@ function clean(){
 	done
 }
 
-# 新しいページファイルの生成 $filename
-function newfile(){
-	cp -i parts/_template.php $1.php
-	echo $1 >> $ROOTPATH/files.tsv
-}
-
 # 目次を生成
 function tof(){
 	mkdir -p parts/table_of_contents
@@ -42,13 +36,17 @@ function tof(){
 	echo '</ol>' >> parts/table_of_contents/$1.php
 }
 
-# create nav ... navを生成
+# create
 function create(){
-	if [ $1 == nav ]
+	if [ $1 == 'nav' ] #  nav ... navを生成
 	then 
 		echo '<nav><ul>' > $ROOTPATH/page/parts/nav.php
 		echo "$FILESDATA"|  awk '{print "'\<li\>\<'a href="$1"''.html'\>'"$2"'\<''\/'a>\<\/li\>" }' >> $ROOTPATH/page/parts/nav.php
 		echo '</ul></nav>' >> $ROOTPATH/page/parts/nav.php
+	elif [ $1 == 'file' ] 	# 新しいページファイルの生成 $filename
+	then
+		cp -i parts/_template.php $2.php
+		echo $2 >> $ROOTPATH/files.tsv
 	fi
 	
 }
